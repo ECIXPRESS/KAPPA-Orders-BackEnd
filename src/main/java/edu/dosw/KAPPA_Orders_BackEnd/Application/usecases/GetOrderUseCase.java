@@ -7,6 +7,7 @@ import edu.dosw.KAPPA_Orders_BackEnd.Domain.Model.OrderStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,10 +41,10 @@ public class GetOrderUseCase {
     }
 
     public List<Order> buscarPorFecha(LocalDate fecha) {
-        OrderFilter filter = new OrderFilter();
-        filter.setFromDate(fecha);
-        filter.setToDate(fecha);
-        return orderRepository.findByFilter(filter);
+        LocalDateTime startOfDay = fecha.atStartOfDay();
+        LocalDateTime endOfDay = fecha.plusDays(1).atStartOfDay();
+
+        return orderRepository.findByCreatedAtBetween(startOfDay, endOfDay);
     }
 
     public List<Order> buscarPorUbicacion(String ubicacion) {
