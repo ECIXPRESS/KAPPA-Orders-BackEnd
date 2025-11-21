@@ -1,41 +1,3 @@
-![ci-cd](https://github.com/ROMANOS-SIHRA/Backend_ECIEXPRESS_KAPPA_2025-2/actions/workflows/ci-cd.yml/badge.svg)
-![Java](https://img.shields.io/badge/Java-17-orange)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-green)
-![Docker](https://img.shields.io/badge/Docker-Enabled-blue)
-![Azure](https://img.shields.io/badge/Azure-App%20Service-0078D4)
-[![API Status](https://img.shields.io/website?url=https%3A%2F%2Fsirha-backend-api.azurewebsites.net%2Factuator%2Fhealth)](https://ECIEXPRESS-backend-api.azurewebsites.net/actuator/health)
-
-
-![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green?logo=mongodb)
-![Maven](https://img.shields.io/badge/Maven-3.9+-red?logo=apache-maven)
-![JUnit](https://img.shields.io/badge/JUnit-5-yellow?logo=junit5)
-![Swagger](https://img.shields.io/badge/Swagger-OpenAPI%203-85EA2D?logo=swagger)
-![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-CI%2FCD-blue?logo=github-actions)
-
-
-![Code Coverage](https://img.shields.io/badge/Coverage-85%25-brightgreen)
-![Quality Gate](https://img.shields.io/badge/Quality%20Gate-Passed-success?logo=sonarqube)
-![Security Rating](https://img.shields.io/badge/Security-A-brightgreen?logo=sonarqube)
-![Maintainability](https://img.shields.io/badge/Maintainability-A-brightgreen?logo=sonarqube)
-![Technical Debt](https://img.shields.io/badge/Tech%20Debt-Low-green)
-
-
-
-
-![Deployment](https://img.shields.io/badge/Deployment-Automated-success)
-![Environment](https://img.shields.io/badge/Environment-Production-red)
-![Response Time](https://img.shields.io/badge/Response%20Time-<200ms-brightgreen)
-
-![HTTPS](https://img.shields.io/badge/HTTPS-Enabled-green?logo=letsencrypt)
-![CORS](https://img.shields.io/badge/CORS-Configured-blue)
-![API](https://img.shields.io/badge/API-RESTful-orange)
-![Authentication](https://img.shields.io/badge/Auth-JWT-purple)
-
-![GitHub](https://img.shields.io/badge/GitHub-Repository-black?logo=github)
-![VS Code](https://img.shields.io/badge/IDE-VS%20Code-blue?logo=visual-studio-code)
-![Postman](https://img.shields.io/badge/Testing-Postman-orange?logo=postman)
-
-
 # 📚 ECIEXPRESS
 
 > <b>Gestionamiento de compras en papelerias y cafeterias</b>
@@ -256,11 +218,35 @@ A continuación se detallan las principales tecnologías empleadas en el proyect
 
 ## 6. 🧩 Funcionalidad
 
+Este sistema sigue una arquitectura hexagonal que tiene ports y adapters, que se separa en:
+
+- Domain layer, el cual sigue la logica de negocio, como esta Order , OrderItem, OrderStatus.
+- Application layer, el cual tiene los casos de uso y los port.
+- La infraestructura layer, qeu en este caso es mongoDB y controllador Rest.
+
+### FLUJO DE ESTADO DE PEDIDO
+
+PENDING → CONFIRMED → PREPARATION → READY → DELIVERED
+CUALQUIER ESTADO → CANCELLED
+
+### VALIDACIONES DE NEGOCIO
+
+- Tener un monto minimo de $5000 para la compra.
+- Control estricto con los estados del pedido.
+- Validacion de los tiempos de preparacion del producto.
+
+### OPERACIONES DISPONIBLES
+
+- CRUD completo del pedido
+- Diferentes criterios de busqueda.
+- Calculos automaticos.
 
 
 ## 7. 📊 Diagramas
 
+Todos los diagramas se encuentran alojados en el siguiente enlace de **diagrams.net**:
 
+https://app.diagrams.net/#G1RnwCkU_w4Dzph-DhAs5T5Y2cuPqFOJEu#%7B%22pageId%22%3A%22gNB0tSydErlkIoSD5pNw%22%7D
 
 ## 8. 🌐 Endpoints expuestos y su información de entrada y salida
 
@@ -392,7 +378,18 @@ La siguiente tabla resume los principales tipos de excepciones manejadas en el s
 
 ## 11. 🗂️ Código de la implementación organizado en las respectivas carpetas
 
-
+src/main/java/edu/dosw/KAPPA_Orders_BackEnd/
+├── Application/              # Capa de Aplicación
+│   ├── ports/               # Puertos (Interfaces)
+│   └── usecases/            # Casos de Uso
+├── Domain/                  # Capa de Dominio
+│   └── Model/               # Entidades y Value Objects
+├── Infrastructure/          # Capa de Infraestructura  
+│   ├── Persistence/         # Implementación Repositorios
+│   └── Web/                 # Controladores y DTOs
+├── Config/                  # Configuración Spring
+├── Exception/               # Manejo de Excepciones
+└── Utils/                   # Utilidades
 
 ## 12. 📝 Código documentado
 
