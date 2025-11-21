@@ -58,6 +58,8 @@ public class OrdersController {
     })
     public ResponseEntity<OrderResponse> crearPedido(@RequestBody CreateOrderRequest request) {
         try {
+            System.out.println("Request recibido: " + request.userId + ", " + request.orderType);
+
             CreateOrderCommand command = new CreateOrderCommand();
             command.userId = request.userId;
             command.orderType = request.orderType;
@@ -70,6 +72,8 @@ public class OrdersController {
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
+            System.err.println("Error al crear pedido: " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.badRequest().build();
         }
     }

@@ -81,6 +81,10 @@ public class Order {
             calculateTotal();
         }
 
+        if (this.items == null || this.items.isEmpty()) {
+            return;
+        }
+
         if (this.total.compareTo(MIN_ORDER_AMOUNT) < 0) {
             throw new IllegalArgumentException(
                     "El pedido mínimo es de $" + MIN_ORDER_AMOUNT
