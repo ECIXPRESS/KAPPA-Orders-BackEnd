@@ -28,7 +28,9 @@ public class OrderFactory {
                 .build();
 
         items.forEach(order::addItem);
+        order.calculateTotal();
+        order.validateOrderAmount();
+
         return order;
     }
-
 }

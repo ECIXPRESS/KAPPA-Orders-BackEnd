@@ -17,6 +17,7 @@ public class OrderResponse {
     public String trackingCode;
     public Integer estimatedPreparationTime;
     public String specialInstructions;
+    public BigDecimal minOrderAmount = new BigDecimal("5000");
 
     public OrderResponse() {}
 }

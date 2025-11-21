@@ -103,6 +103,12 @@ public class OrderItem {
     }
 
     public BigDecimal calculateSubtotal() {
+        if (quantity == null || quantity <= 0) {
+            throw new IllegalArgumentException("La cantidad debe ser mayor a 0");
+        }
+        if (unitPrice == null || unitPrice.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("El precio unitario debe ser mayor a 0");
+        }
         return unitPrice.multiply(BigDecimal.valueOf(quantity));
     }
 }

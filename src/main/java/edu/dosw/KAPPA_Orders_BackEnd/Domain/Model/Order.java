@@ -21,6 +21,7 @@ public class Order {
     private String trackingCode;
     private Integer estimatedPreparationTime;
     private String specialInstructions;
+    private static final BigDecimal MIN_ORDER_AMOUNT = new BigDecimal("5000");
 
     public Order() {
         this.items = new ArrayList<>();
@@ -73,5 +74,17 @@ public class Order {
     public void addItem(OrderItem item) {
         this.items.add(item);
         calculateTotal();
+    }
+
+    public void validateOrderAmount() {
+        if (this.total == null) {
+            calculateTotal();
+        }
+
+        if (this.total.compareTo(MIN_ORDER_AMOUNT) < 0) {
+            throw new IllegalArgumentException(
+                    "El pedido mínimo es de $" + MIN_ORDER_AMOUNT
+            );
+        }
     }
 }

@@ -3,6 +3,7 @@ package edu.dosw.KAPPA_Orders_BackEnd.Application.usecases;
 import edu.dosw.KAPPA_Orders_BackEnd.Application.ports.OrderRepositoryPort;
 import edu.dosw.KAPPA_Orders_BackEnd.Domain.Model.Order;
 import edu.dosw.KAPPA_Orders_BackEnd.Domain.Model.OrderStatus;
+import edu.dosw.KAPPA_Orders_BackEnd.Exception.Excepciones;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,11 +16,16 @@ public class UpdateOrderStatusUseCase {
     }
 
     public Order cambiarEstado(UpdateOrderStatusCommand command) {
+        Excepciones.throwIfEmpty(command.orderId, "orderId");
+        Excepciones.throwIfNull(command.newStatus, "newStatus");
         Order orden = orderRepository.findById(command.orderId)
-                .orElseThrow(() -> new RuntimeException("No se encontró la orden: " + command.orderId));
+                .orElseThrow(() -> new Excepciones.OrderNotFoundException(command.orderId));
 
         if (!puedeCambiarEstado(orden.getStatus(), command.newStatus)) {
-            throw new RuntimeException("No se puede cambiar de " + orden.getStatus() + " a " + command.newStatus);
+            throw new Excepciones.InvalidStatusTransitionException(
+                    orden.getStatus().name(),
+                    command.newStatus.name()
+            );
         }
 
         orden.setStatus(command.newStatus);
@@ -43,6 +49,7 @@ public class UpdateOrderStatusUseCase {
     }
 
     public Order cancelarOrden(String orderId) {
+        Excepciones.throwIfEmpty(orderId, "orderId");
         UpdateOrderStatusCommand command = new UpdateOrderStatusCommand();
         command.orderId = orderId;
         command.newStatus = OrderStatus.CANCELLED;
@@ -50,6 +57,7 @@ public class UpdateOrderStatusUseCase {
     }
 
     public Order confirmarOrden(String orderId) {
+        Excepciones.throwIfEmpty(orderId, "orderId");
         UpdateOrderStatusCommand command = new UpdateOrderStatusCommand();
         command.orderId = orderId;
         command.newStatus = OrderStatus.CONFIRMED;
@@ -57,6 +65,7 @@ public class UpdateOrderStatusUseCase {
     }
 
     public Order marcarEnPreparacion(String orderId) {
+        Excepciones.throwIfEmpty(orderId, "orderId");
         UpdateOrderStatusCommand command = new UpdateOrderStatusCommand();
         command.orderId = orderId;
         command.newStatus = OrderStatus.PREPARATION;
@@ -64,6 +73,7 @@ public class UpdateOrderStatusUseCase {
     }
 
     public Order marcarListo(String orderId) {
+        Excepciones.throwIfEmpty(orderId, "orderId");
         UpdateOrderStatusCommand command = new UpdateOrderStatusCommand();
         command.orderId = orderId;
         command.newStatus = OrderStatus.READY;
@@ -71,6 +81,7 @@ public class UpdateOrderStatusUseCase {
     }
 
     public Order marcarEntregado(String orderId) {
+        Excepciones.throwIfEmpty(orderId, "orderId");
         UpdateOrderStatusCommand command = new UpdateOrderStatusCommand();
         command.orderId = orderId;
         command.newStatus = OrderStatus.DELIVERED;
