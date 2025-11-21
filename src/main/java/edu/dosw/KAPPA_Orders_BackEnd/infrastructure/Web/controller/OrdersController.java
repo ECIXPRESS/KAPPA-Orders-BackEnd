@@ -236,22 +236,6 @@ public class OrdersController {
         }
     }
 
-    @GetMapping("/{orderId}/validate-minimum")
-    @Operation(summary = "Validar el monto mínimo")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Validación completada"),
-            @ApiResponse(responseCode = "404", description = "Pedido no encontrado")
-    })
-    public ResponseEntity<Boolean> validarMontoMinimo(
-            @Parameter(description = "ID del pedido") @PathVariable String orderId) {
-        try {
-            boolean isValid = orderOperationsUseCase.validarMontoMinimo(orderId);
-            return ResponseEntity.ok(isValid);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     @PutMapping("/{orderId}/estimated-time")
     @Operation(summary = "Actualizar tiempo estimado")
     @ApiResponses(value = {
