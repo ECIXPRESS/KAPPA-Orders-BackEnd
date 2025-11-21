@@ -1,11 +1,11 @@
-package edu.dosw.KAPPA_Orders.BackEnd;
+package edu.dosw.KAPPA_Orders_BackEnd;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Application {
+public class OrdersApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(edu.dosw.KAPPA_Orders_BackEnd.OrdersApplication.class, args);
     }
 }
