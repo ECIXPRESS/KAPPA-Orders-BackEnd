@@ -11,7 +11,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class OrderBuilder {
     private String userId;
     private OrderType orderType;
