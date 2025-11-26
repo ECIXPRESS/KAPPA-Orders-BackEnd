@@ -1,9 +1,17 @@
 package edu.dosw.KAPPA_Orders_BackEnd.Domain.Model;
 
+import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class OrderItem {
     @Id
     private String id;
@@ -15,7 +23,6 @@ public class OrderItem {
     private BigDecimal unitPrice;
     private String details;
 
-    public OrderItem() {}
 
     public OrderItem(String productId, String productName, OrderType productType,
                      Integer quantity, BigDecimal unitPrice, String details) {
@@ -35,70 +42,6 @@ public class OrderItem {
         this.productType = productType;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
-        this.details = details;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
-    public String getProductId() {
-        return productId;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public OrderType getProductType() {
-        return productType;
-    }
-
-    public void setProductType(OrderType productType) {
-        this.productType = productType;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public BigDecimal getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(BigDecimal unitPrice) {
-        this.unitPrice = unitPrice;
-    }
-
-    public String getDetails() {
-        return details;
-    }
-
-    public void setDetails(String details) {
         this.details = details;
     }
 

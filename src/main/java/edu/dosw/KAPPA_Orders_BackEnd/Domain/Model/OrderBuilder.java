@@ -1,9 +1,17 @@
 package edu.dosw.KAPPA_Orders_BackEnd.Domain.Model;
 
+import lombok.*;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class OrderBuilder {
     private String userId;
     private OrderType orderType;
