@@ -1251,7 +1251,54 @@ El sistema utiliza `@RestControllerAdvice` para capturar y manejar todas las exc
 
 ## 11. 🗂️ Código de la implementación organizado en las respectivas carpetas
 
-
+📦 KAPPA_Orders_BackEnd
+└── 📁 src/main/java/edu/dosw/KAPPA_Orders_BackEnd
+├── 📁 Application
+│   ├── 📁 ports
+│   │   └── 📄 OrderRepositoryPort
+│   └── 📁 usecases
+│       ├── 📄 AddOrderItemUseCase
+│       ├── 📄 CreateOrderCommand
+│       ├── 📄 CreateOrderUseCase
+│       ├── 📄 DeleteOrderUseCase
+│       ├── 📄 GetOrderItemsUseCase
+│       ├── 📄 GetOrderUseCase
+│       ├── 📄 OrderItemCommand
+│       ├── 📄 OrderOperationsUseCase
+│       ├── 📄 UpdateOrderStatusCommand
+│       └── 📄 UpdateOrderStatusUseCase
+├── 📁 Config
+│   ├── 📄 Config
+│   └── 📄 SecurityConfig
+├── 📁 Domain
+│   └── 📁 Model
+│       ├── 📄 Order
+│       ├── 📄 OrderBuilder
+│       ├── 📄 OrderFactory
+│       ├── 📄 OrderFilter
+│       ├── 📄 OrderItem
+│       ├── 📄 OrderStatus
+│       └── 📄 OrderType
+├── 📁 Exception
+│   ├── 📄 Excepciones
+│   └── 📄 GlobalExceptionHandler
+├── 📁 infrastructure
+│   ├── 📁 Persistence
+│   │   └── 📄 OrdersMongoRepository
+│   └── 📁 Web
+│       ├── 📁 controller
+│       │   └── 📄 OrdersController
+│       └── 📁 dto
+│           ├── 📁 request
+│           │   ├── 📄 CreateOrderRequest
+│           │   ├── 📄 OrderItemRequest
+│           │   ├── 📄 UpdateEstimatedTimeRequest
+│           │   └── 📄 UpdateOrderStatusRequest
+│           └── 📁 response
+│               ├── 📄 OrderItemResponse
+│               └── 📄 OrderResponse
+├── 📁 Utils
+└── 📄 OrdersApplication
 
 ## 12. 📝 Código documentado
 
