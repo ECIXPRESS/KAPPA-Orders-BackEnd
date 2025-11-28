@@ -48,6 +48,21 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-jose</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.8.6</version>
@@ -149,18 +164,14 @@
                             <goal>report</goal>
                         </goals>
                         <configuration>
-                            <excludes>
-                                <exclude>**/repository/*</exclude>
-                                <exclude>**/Repository*.class</exclude>
-                                <exclude>**/*Repository.class</exclude>
-                                <exclude>**/Model/*</exclude>
-                                <exclude>**/model/*</exclude>
-                                <exclude>**/entity/*</exclude>
-                                <exclude>**/config/*</exclude>
-                                <exclude>**/configuration/*</exclude>
-                                <exclude>**/dto/*</exclude>
-                                <exclude>**/DTO/*</exclude>
-                            </excludes>
+                            <includes>
+                                <include>**/domain/**</include>
+                                <include>**/Domain/**</include>
+                                <include>**/model/**</include>
+                                <include>**/Model/**</include>
+                                <include>**/usecases/**</include>
+                                <include>**/controller/**</include>
+                            </includes>
                         </configuration>
                     </execution>
                     <execution>

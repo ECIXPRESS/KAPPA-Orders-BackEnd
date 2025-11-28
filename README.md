@@ -223,7 +223,13 @@ A continuación se detallan las principales tecnologías empleadas en el proyect
 
 ## 7. 📊 Diagramas
 
+### Diagrama de componenetes — Especifico (Backend)
 
+![img_1.png](img_1.png)
+
+### Diagrama de clases
+
+![img_2.png](img_2.png)
 
 ## 8. 🌐 Endpoints expuestos y su información de entrada y salida
 
@@ -351,7 +357,7 @@ La siguiente tabla resume los principales tipos de excepciones manejadas en el s
 
 ## 10. 🧪 Evidencia de las pruebas y cómo ejecutarlas
 
-
+![img.png](img.png)
 
 ## 11. 🗂️ Código de la implementación organizado en las respectivas carpetas
 

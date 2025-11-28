@@ -26,7 +26,7 @@ public class Order {
     public Order() {
         this.items = new ArrayList<>();
         this.createdAt = LocalDateTime.now();
-        this.status = OrderStatus.PENDING;
+        this.status = OrderStatus.PENDIENTE;
     }
 
     public String getId() { return id; }

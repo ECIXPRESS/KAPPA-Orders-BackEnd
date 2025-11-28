@@ -100,7 +100,7 @@ public class OrdersMongoRepository implements OrderRepositoryPort {
 
     @Override
     public List<Order> findPendingOrders() {
-        Query query = new Query(Criteria.where("status").is(OrderStatus.PENDING));
+        Query query = new Query(Criteria.where("status").is(OrderStatus.PENDIENTE));
         return mongoTemplate.find(query, Order.class, "orders");
     }
 
@@ -109,7 +109,7 @@ public class OrdersMongoRepository implements OrderRepositoryPort {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = LocalDate.now().plusDays(1).atStartOfDay();
 
-        Query query = new Query(Criteria.where("status").is(OrderStatus.DELIVERED)
+        Query query = new Query(Criteria.where("status").is(OrderStatus.ENTREGADO)
                 .and("createdAt").gte(startOfDay).lte(endOfDay));
         return mongoTemplate.find(query, Order.class, "orders");
     }
