@@ -22,6 +22,7 @@ public class AddOrderItemUseCase {
                 .orElseThrow(() -> new RuntimeException("Orden no encontrada: " + command.orderId));
 
         OrderItem item = new OrderItem(
+                command.id,
                 command.orderId,
                 command.productId,
                 command.productName,

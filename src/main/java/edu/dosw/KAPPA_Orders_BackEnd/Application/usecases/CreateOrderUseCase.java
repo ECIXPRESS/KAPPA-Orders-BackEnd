@@ -24,7 +24,8 @@ public class CreateOrderUseCase {
                 command.orderType,
                 Collections.emptyList(),
                 command.scheduledPickup,
-                command.pickupLocation
+                command.pickupLocation,
+                command.store
         );
 
         if (command.specialInstructions != null && !command.specialInstructions.trim().isEmpty()) {
