@@ -1,4 +1,4 @@
-package edu.dosw.KAPPA_Orders_BackEnd.infrastructure.Web.dto.response;
+package edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.dto.response;
 
 import edu.dosw.KAPPA_Orders_BackEnd.Domain.Model.OrderStatus;
 import edu.dosw.KAPPA_Orders_BackEnd.Domain.Model.OrderType;
@@ -13,6 +13,7 @@ public class OrderResponse {
     public LocalDateTime createdAt;
     public LocalDateTime scheduledPickup;
     public String pickupLocation;
+    public String store;
     public BigDecimal total;
     public String trackingCode;
     public Integer estimatedPreparationTime;

@@ -27,17 +27,17 @@ public class UpdateOrderStatusUseCase {
     }
 
     private boolean puedeCambiarEstado(OrderStatus estadoActual, OrderStatus nuevoEstado) {
-        if (estadoActual == OrderStatus.PENDIENTE) {
-            return nuevoEstado == OrderStatus.CONFIRMADO || nuevoEstado == OrderStatus.CANCELADO;
+        if (estadoActual == OrderStatus.PENDING) {
+            return nuevoEstado == OrderStatus.CONFIRMED || nuevoEstado == OrderStatus.CANCELED;
         }
-        if (estadoActual == OrderStatus.CONFIRMADO) {
-            return nuevoEstado == OrderStatus.EN_PREPARACION || nuevoEstado == OrderStatus.CANCELADO;
+        if (estadoActual == OrderStatus.CONFIRMED) {
+            return nuevoEstado == OrderStatus.PREPARING || nuevoEstado == OrderStatus.CANCELED;
         }
-        if (estadoActual == OrderStatus.EN_PREPARACION) {
-            return nuevoEstado == OrderStatus.LISTO || nuevoEstado == OrderStatus.CANCELADO;
+        if (estadoActual == OrderStatus.PREPARING) {
+            return nuevoEstado == OrderStatus.READY || nuevoEstado == OrderStatus.CANCELED;
         }
-        if (estadoActual == OrderStatus.LISTO) {
-            return nuevoEstado == OrderStatus.ENTREGADO;
+        if (estadoActual == OrderStatus.READY) {
+            return nuevoEstado == OrderStatus.DELIVERED;
         }
         return false;
     }
@@ -45,35 +45,35 @@ public class UpdateOrderStatusUseCase {
     public Order cancelarOrden(String orderId) {
         UpdateOrderStatusCommand command = new UpdateOrderStatusCommand();
         command.orderId = orderId;
-        command.newStatus = OrderStatus.CANCELADO;
+        command.newStatus = OrderStatus.CANCELED;
         return cambiarEstado(command);
     }
 
     public Order confirmarOrden(String orderId) {
         UpdateOrderStatusCommand command = new UpdateOrderStatusCommand();
         command.orderId = orderId;
-        command.newStatus = OrderStatus.CONFIRMADO;
+        command.newStatus = OrderStatus.CONFIRMED;
         return cambiarEstado(command);
     }
 
     public Order marcarEnPreparacion(String orderId) {
         UpdateOrderStatusCommand command = new UpdateOrderStatusCommand();
         command.orderId = orderId;
-        command.newStatus = OrderStatus.EN_PREPARACION;
+        command.newStatus = OrderStatus.PREPARING;
         return cambiarEstado(command);
     }
 
     public Order marcarListo(String orderId) {
         UpdateOrderStatusCommand command = new UpdateOrderStatusCommand();
         command.orderId = orderId;
-        command.newStatus = OrderStatus.LISTO;
+        command.newStatus = OrderStatus.READY;
         return cambiarEstado(command);
     }
 
     public Order marcarEntregado(String orderId) {
         UpdateOrderStatusCommand command = new UpdateOrderStatusCommand();
         command.orderId = orderId;
-        command.newStatus = OrderStatus.ENTREGADO;
+        command.newStatus = OrderStatus.DELIVERED;
         return cambiarEstado(command);
     }
 }

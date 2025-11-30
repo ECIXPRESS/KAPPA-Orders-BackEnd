@@ -4,10 +4,10 @@ import edu.dosw.KAPPA_Orders_BackEnd.Application.usecases.*;
 import edu.dosw.KAPPA_Orders_BackEnd.Domain.Model.Order;
 import edu.dosw.KAPPA_Orders_BackEnd.Domain.Model.OrderItem;
 import edu.dosw.KAPPA_Orders_BackEnd.Domain.Model.OrderStatus;
-import edu.dosw.KAPPA_Orders_BackEnd.infrastructure.Web.controller.OrdersController;
-import edu.dosw.KAPPA_Orders_BackEnd.infrastructure.Web.dto.request.*;
-import edu.dosw.KAPPA_Orders_BackEnd.infrastructure.Web.dto.response.OrderResponse;
-import edu.dosw.KAPPA_Orders_BackEnd.infrastructure.Web.dto.response.OrderItemResponse;
+import edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.controller.OrdersController;
+import edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.dto.request.*;
+import edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.dto.response.OrderResponse;
+import edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.dto.response.OrderItemResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -59,7 +59,7 @@ class OrdersControllerTest {
         testOrder.setId(TEST_ORDER_ID);
         testOrder.setUserId(TEST_USER_ID);
         testOrder.setOrderType(CAFETERIA);
-        testOrder.setStatus(OrderStatus.PENDIENTE);
+        testOrder.setStatus(OrderStatus.PENDING);
         testOrder.setCreatedAt(LocalDateTime.now());
         testOrder.setScheduledPickup(LocalDateTime.now().plusHours(1));
         testOrder.setPickupLocation("Cafetería Principal");
@@ -185,7 +185,7 @@ class OrdersControllerTest {
     @Test
     void testActualizarEstadoExitoso() {
         UpdateOrderStatusRequest request = new UpdateOrderStatusRequest();
-        request.newStatus = OrderStatus.EN_PREPARACION;
+        request.newStatus = OrderStatus.PREPARING;
 
         when(updateOrderStatusUseCase.cambiarEstado(any(UpdateOrderStatusCommand.class))).thenReturn(testOrder);
 
@@ -198,7 +198,7 @@ class OrdersControllerTest {
     @Test
     void testActualizarEstadoNoEncontrado() {
         UpdateOrderStatusRequest request = new UpdateOrderStatusRequest();
-        request.newStatus = OrderStatus.EN_PREPARACION;
+        request.newStatus = OrderStatus.PREPARING;
 
         when(updateOrderStatusUseCase.cambiarEstado(any(UpdateOrderStatusCommand.class)))
                 .thenThrow(new RuntimeException("No encontrado"));
@@ -231,9 +231,9 @@ class OrdersControllerTest {
     @Test
     void testListarPedidosPorEstado() {
         List<Order> orders = Arrays.asList(testOrder);
-        when(getOrderUseCase.buscarPorEstado(OrderStatus.PENDIENTE)).thenReturn(orders);
+        when(getOrderUseCase.buscarPorEstado(OrderStatus.PENDING)).thenReturn(orders);
 
-        ResponseEntity<List<OrderResponse>> response = ordersController.listarPedidosPorEstado(OrderStatus.PENDIENTE);
+        ResponseEntity<List<OrderResponse>> response = ordersController.listarPedidosPorEstado(OrderStatus.PENDING);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(1, response.getBody().size());

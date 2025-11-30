@@ -1,17 +1,22 @@
-package edu.dosw.KAPPA_Orders_BackEnd.infrastructure.Web.controller;
+package edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.controller;
 
 import edu.dosw.KAPPA_Orders_BackEnd.Application.usecases.*;
 import edu.dosw.KAPPA_Orders_BackEnd.Domain.Model.Order;
 import edu.dosw.KAPPA_Orders_BackEnd.Domain.Model.OrderItem;
 import edu.dosw.KAPPA_Orders_BackEnd.Domain.Model.OrderStatus;
-import edu.dosw.KAPPA_Orders_BackEnd.infrastructure.Web.dto.request.*;
-import edu.dosw.KAPPA_Orders_BackEnd.infrastructure.Web.dto.response.OrderResponse;
-import edu.dosw.KAPPA_Orders_BackEnd.infrastructure.Web.dto.response.OrderItemResponse;
+import edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.dto.request.*;
+import edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.dto.request.CreateOrderRequest;
+import edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.dto.response.OrderResponse;
+import edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.dto.response.OrderItemResponse;
+import edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.dto.request.OrderItemRequest;
+import edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.dto.request.UpdateOrderStatusRequest;
+import edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.dto.request.UpdateEstimatedTimeRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +29,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/orders")
 @Tag(name = "Gestión de Pedidos", description = "API para gestión completa de pedidos del sistema ECIXPRESS")
+@RequiredArgsConstructor
 public class OrdersController {
 
     private final CreateOrderUseCase createOrderUseCase;
@@ -33,22 +39,6 @@ public class OrdersController {
     private final UpdateOrderStatusUseCase updateOrderStatusUseCase;
     private final OrderOperationsUseCase orderOperationsUseCase;
     private final DeleteOrderUseCase deleteOrderUseCase;
-
-    public OrdersController(CreateOrderUseCase createOrderUseCase,
-                            AddOrderItemUseCase addOrderItemUseCase,
-                            GetOrderUseCase getOrderUseCase,
-                            GetOrderItemsUseCase getOrderItemsUseCase,
-                            UpdateOrderStatusUseCase updateOrderStatusUseCase,
-                            OrderOperationsUseCase orderOperationsUseCase,
-                            DeleteOrderUseCase deleteOrderUseCase) {
-        this.createOrderUseCase = createOrderUseCase;
-        this.addOrderItemUseCase = addOrderItemUseCase;
-        this.getOrderUseCase = getOrderUseCase;
-        this.getOrderItemsUseCase = getOrderItemsUseCase;
-        this.updateOrderStatusUseCase = updateOrderStatusUseCase;
-        this.orderOperationsUseCase = orderOperationsUseCase;
-        this.deleteOrderUseCase = deleteOrderUseCase;
-    }
 
     @PostMapping
     @Operation(summary = "Crea un nuevo pedido")
@@ -66,6 +56,7 @@ public class OrdersController {
             command.scheduledPickup = request.scheduledPickup;
             command.pickupLocation = request.pickupLocation;
             command.specialInstructions = request.specialInstructions;
+            command.store = request.store;
 
             Order order = createOrderUseCase.crearOrden(command);
             OrderResponse response = toOrderResponse(order);
@@ -429,6 +420,7 @@ public class OrdersController {
         response.estimatedPreparationTime = order.getEstimatedPreparationTime();
         response.specialInstructions = order.getSpecialInstructions();
         response.minOrderAmount = new BigDecimal("5000");
+        response.store = order.getStore();
         return response;
     }
 

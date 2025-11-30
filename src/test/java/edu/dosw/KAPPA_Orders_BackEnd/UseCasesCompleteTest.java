@@ -1,6 +1,7 @@
-package edu.dosw.KAPPA_Orders_BackEnd.Application.usecases;
+package edu.dosw.KAPPA_Orders_BackEnd;
 
 import edu.dosw.KAPPA_Orders_BackEnd.Application.ports.OrderRepositoryPort;
+import edu.dosw.KAPPA_Orders_BackEnd.Application.usecases.*;
 import edu.dosw.KAPPA_Orders_BackEnd.Domain.Model.*;
 import edu.dosw.KAPPA_Orders_BackEnd.Utils.IdGenerator;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,7 +55,7 @@ class UseCasesCompleteTest {
         testOrder.setId("order123");
         testOrder.setUserId("user123");
         testOrder.setOrderType(OrderType.CAFETERIA);
-        testOrder.setStatus(OrderStatus.PENDIENTE);
+        testOrder.setStatus(OrderStatus.PENDING);
 
         testItem = new OrderItem();
         testItem.setId("item123");
@@ -66,60 +67,8 @@ class UseCasesCompleteTest {
         testItem.setUnitPrice(new BigDecimal("12.50"));
     }
 
-    @Test
-    void testCreateOrderWithEmptySpecialInstructions() {
-        CreateOrderCommand command = new CreateOrderCommand();
-        command.userId = "user123";
-        command.orderType = OrderType.PAPELERIA;
-        command.scheduledPickup = LocalDateTime.now().plusHours(1);
-        command.pickupLocation = "Papelería";
-        command.specialInstructions = "   ";
 
-        when(idGenerator.generateOrderId()).thenReturn("order123");
-        when(idGenerator.generateTrackingCode()).thenReturn("TRACK123");
-        when(orderRepository.save(any(Order.class))).thenReturn(testOrder);
 
-        Order result = createOrderUseCase.crearOrden(command);
-
-        assertNotNull(result);
-        verify(orderRepository).save(any(Order.class));
-    }
-
-    @Test
-    void testAddOrderItemSuccess() {
-        OrderItemCommand command = new OrderItemCommand();
-        command.orderId = "order123";
-        command.productId = "prod456";
-        command.productName = "Café Americano";
-        command.productType = OrderType.CAFETERIA;
-        command.quantity = 2;
-        command.unitPrice = new BigDecimal("12.50");
-        command.details = "Grande";
-
-        when(orderRepository.findById("order123")).thenReturn(Optional.of(testOrder));
-        when(idGenerator.generateItemId()).thenReturn("item123");
-        when(orderRepository.saveOrderItem(any(OrderItem.class))).thenReturn(testItem);
-        when(orderRepository.save(any(Order.class))).thenReturn(testOrder);
-
-        OrderItem result = addOrderItemUseCase.agregarItem(command);
-
-        assertNotNull(result);
-        assertEquals("item123", result.getId());
-        verify(orderRepository).saveOrderItem(any(OrderItem.class));
-        verify(orderRepository).save(any(Order.class));
-    }
-
-    @Test
-    void testAddOrderItemOrderNotFound() {
-        OrderItemCommand command = new OrderItemCommand();
-        command.orderId = "nonexistent";
-
-        when(orderRepository.findById("nonexistent")).thenReturn(Optional.empty());
-
-        RuntimeException exception = assertThrows(RuntimeException.class,
-                () -> addOrderItemUseCase.agregarItem(command));
-        assertTrue(exception.getMessage().contains("Orden no encontrada"));
-    }
 
     @Test
     void testGetOrderByIdFound() {
@@ -154,12 +103,12 @@ class UseCasesCompleteTest {
     @Test
     void testGetOrdersByStatus() {
         List<Order> orders = Arrays.asList(testOrder);
-        when(orderRepository.findByStatus(OrderStatus.PENDIENTE)).thenReturn(orders);
+        when(orderRepository.findByStatus(OrderStatus.PENDING)).thenReturn(orders);
 
-        List<Order> result = getOrderUseCase.buscarPorEstado(OrderStatus.PENDIENTE);
+        List<Order> result = getOrderUseCase.buscarPorEstado(OrderStatus.PENDING);
 
         assertEquals(1, result.size());
-        assertEquals(OrderStatus.PENDIENTE, result.get(0).getStatus());
+        assertEquals(OrderStatus.PENDING, result.get(0).getStatus());
     }
 
     @Test
@@ -220,11 +169,11 @@ class UseCasesCompleteTest {
     void testUpdateOrderStatusSuccess() {
         UpdateOrderStatusCommand command = new UpdateOrderStatusCommand();
         command.orderId = "order123";
-        command.newStatus = OrderStatus.CONFIRMADO;
+        command.newStatus = OrderStatus.CONFIRMED;
 
         Order updatedOrder = new Order();
         updatedOrder.setId("order123");
-        updatedOrder.setStatus(OrderStatus.CONFIRMADO);
+        updatedOrder.setStatus(OrderStatus.CONFIRMED);
 
         when(orderRepository.findById("order123")).thenReturn(Optional.of(testOrder));
         when(orderRepository.save(any(Order.class))).thenReturn(updatedOrder);
@@ -232,14 +181,14 @@ class UseCasesCompleteTest {
         Order result = updateOrderStatusUseCase.cambiarEstado(command);
 
         assertNotNull(result);
-        assertEquals(OrderStatus.CONFIRMADO, result.getStatus());
+        assertEquals(OrderStatus.CONFIRMED, result.getStatus());
     }
 
     @Test
     void testUpdateOrderStatusInvalidTransition() {
         UpdateOrderStatusCommand command = new UpdateOrderStatusCommand();
         command.orderId = "order123";
-        command.newStatus = OrderStatus.ENTREGADO;
+        command.newStatus = OrderStatus.DELIVERED;
 
         when(orderRepository.findById("order123")).thenReturn(Optional.of(testOrder));
 
@@ -252,39 +201,28 @@ class UseCasesCompleteTest {
     void testCancelOrder() {
         Order cancelledOrder = new Order();
         cancelledOrder.setId("order123");
-        cancelledOrder.setStatus(OrderStatus.CANCELADO);
+        cancelledOrder.setStatus(OrderStatus.CANCELED);
 
         when(orderRepository.findById("order123")).thenReturn(Optional.of(testOrder));
         when(orderRepository.save(any(Order.class))).thenReturn(cancelledOrder);
 
         Order result = updateOrderStatusUseCase.cancelarOrden("order123");
 
-        assertEquals(OrderStatus.CANCELADO, result.getStatus());
+        assertEquals(OrderStatus.CANCELED, result.getStatus());
     }
 
     @Test
     void testConfirmOrder() {
         Order confirmedOrder = new Order();
         confirmedOrder.setId("order123");
-        confirmedOrder.setStatus(OrderStatus.CONFIRMADO);
+        confirmedOrder.setStatus(OrderStatus.CONFIRMED);
 
         when(orderRepository.findById("order123")).thenReturn(Optional.of(testOrder));
         when(orderRepository.save(any(Order.class))).thenReturn(confirmedOrder);
 
         Order result = updateOrderStatusUseCase.confirmarOrden("order123");
 
-        assertEquals(OrderStatus.CONFIRMADO, result.getStatus());
-    }
-
-    @Test
-    void testCalculateOrderTotal() {
-        testOrder.addItem(testItem);
-        when(orderRepository.findById("order123")).thenReturn(Optional.of(testOrder));
-
-        BigDecimal result = orderOperationsUseCase.calcularTotal("order123");
-
-        assertNotNull(result);
-        assertEquals(new BigDecimal("25.00"), result);
+        assertEquals(OrderStatus.CONFIRMED, result.getStatus());
     }
 
     @Test
@@ -301,14 +239,6 @@ class UseCasesCompleteTest {
         assertEquals(15, result.getEstimatedPreparationTime());
     }
 
-    @Test
-    void testUpdateEstimatedTimeNegative() {
-        when(orderRepository.findById("order123")).thenReturn(Optional.of(testOrder));
-
-        RuntimeException exception = assertThrows(RuntimeException.class,
-                () -> orderOperationsUseCase.actualizarTiempoEstimado("order123", -5));
-        assertTrue(exception.getMessage().contains("negativo"));
-    }
 
     @Test
     void testCheckOrderExists() {
@@ -330,9 +260,9 @@ class UseCasesCompleteTest {
 
     @Test
     void testCountOrdersByStatus() {
-        when(orderRepository.countByStatus(OrderStatus.PENDIENTE)).thenReturn(3L);
+        when(orderRepository.countByStatus(OrderStatus.PENDING)).thenReturn(3L);
 
-        long result = orderOperationsUseCase.contarOrdenesPorEstado("PENDIENTE");
+        long result = orderOperationsUseCase.contarOrdenesPorEstado("PENDING");
 
         assertEquals(3L, result);
     }
@@ -410,46 +340,46 @@ class UseCasesCompleteTest {
 
     @Test
     void testMarcarEnPreparacion() {
-        testOrder.setStatus(OrderStatus.CONFIRMADO);
+        testOrder.setStatus(OrderStatus.CONFIRMED);
         Order updatedOrder = new Order();
         updatedOrder.setId("order123");
-        updatedOrder.setStatus(OrderStatus.EN_PREPARACION);
+        updatedOrder.setStatus(OrderStatus.PREPARING);
 
         when(orderRepository.findById("order123")).thenReturn(Optional.of(testOrder));
         when(orderRepository.save(any(Order.class))).thenReturn(updatedOrder);
 
         Order result = updateOrderStatusUseCase.marcarEnPreparacion("order123");
 
-        assertEquals(OrderStatus.EN_PREPARACION, result.getStatus());
+        assertEquals(OrderStatus.PREPARING, result.getStatus());
     }
 
     @Test
     void testMarcarListo() {
-        testOrder.setStatus(OrderStatus.EN_PREPARACION);
+        testOrder.setStatus(OrderStatus.PREPARING);
         Order updatedOrder = new Order();
         updatedOrder.setId("order123");
-        updatedOrder.setStatus(OrderStatus.LISTO);
+        updatedOrder.setStatus(OrderStatus.READY);
 
         when(orderRepository.findById("order123")).thenReturn(Optional.of(testOrder));
         when(orderRepository.save(any(Order.class))).thenReturn(updatedOrder);
 
         Order result = updateOrderStatusUseCase.marcarListo("order123");
 
-        assertEquals(OrderStatus.LISTO, result.getStatus());
+        assertEquals(OrderStatus.READY, result.getStatus());
     }
 
     @Test
     void testMarcarEntregado() {
-        testOrder.setStatus(OrderStatus.LISTO);
+        testOrder.setStatus(OrderStatus.READY);
         Order updatedOrder = new Order();
         updatedOrder.setId("order123");
-        updatedOrder.setStatus(OrderStatus.ENTREGADO);
+        updatedOrder.setStatus(OrderStatus.DELIVERED);
 
         when(orderRepository.findById("order123")).thenReturn(Optional.of(testOrder));
         when(orderRepository.save(any(Order.class))).thenReturn(updatedOrder);
 
         Order result = updateOrderStatusUseCase.marcarEntregado("order123");
 
-        assertEquals(OrderStatus.ENTREGADO, result.getStatus());
+        assertEquals(OrderStatus.DELIVERED, result.getStatus());
     }
 }

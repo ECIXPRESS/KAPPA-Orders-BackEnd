@@ -1,4 +1,4 @@
-package edu.dosw.KAPPA_Orders_BackEnd.infrastructure.Persistence;
+package edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Persistence;
 
 import edu.dosw.KAPPA_Orders_BackEnd.Application.ports.OrderRepositoryPort;
 import edu.dosw.KAPPA_Orders_BackEnd.Domain.Model.Order;
@@ -100,7 +100,7 @@ public class OrdersMongoRepository implements OrderRepositoryPort {
 
     @Override
     public List<Order> findPendingOrders() {
-        Query query = new Query(Criteria.where("status").is(OrderStatus.PENDIENTE));
+        Query query = new Query(Criteria.where("status").is(OrderStatus.PENDING));
         return mongoTemplate.find(query, Order.class, "orders");
     }
 
@@ -109,7 +109,7 @@ public class OrdersMongoRepository implements OrderRepositoryPort {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = LocalDate.now().plusDays(1).atStartOfDay();
 
-        Query query = new Query(Criteria.where("status").is(OrderStatus.ENTREGADO)
+        Query query = new Query(Criteria.where("status").is(OrderStatus.PENDING)
                 .and("createdAt").gte(startOfDay).lte(endOfDay));
         return mongoTemplate.find(query, Order.class, "orders");
     }

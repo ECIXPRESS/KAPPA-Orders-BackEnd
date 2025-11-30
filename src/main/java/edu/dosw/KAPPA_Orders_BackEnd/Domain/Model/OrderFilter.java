@@ -1,7 +1,14 @@
 package edu.dosw.KAPPA_Orders_BackEnd.Domain.Model;
 
+import lombok.*;
+
 import java.time.LocalDate;
 
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderFilter {
     private String userId;
     private OrderType orderType;
@@ -10,41 +17,24 @@ public class OrderFilter {
     private LocalDate toDate;
     private String pickupLocation;
 
-    public OrderFilter() {}
-
-    public String getUserId() { return userId; }
-    public OrderFilter setUserId(String userId) {
-        this.userId = userId;
-        return this;
+    /**
+     * Validates that the date range is valid
+     */
+    public void validateDateRange() {
+        if (fromDate != null && toDate != null && fromDate.isAfter(toDate)) {
+            throw new IllegalArgumentException("La fecha inicial no puede ser posterior a la fecha final");
+        }
     }
 
-    public OrderType getOrderType() { return orderType; }
-    public OrderFilter setOrderType(OrderType orderType) {
-        this.orderType = orderType;
-        return this;
-    }
-
-    public OrderStatus getStatus() { return status; }
-    public OrderFilter setStatus(OrderStatus status) {
-        this.status = status;
-        return this;
-    }
-
-    public LocalDate getFromDate() { return fromDate; }
-    public OrderFilter setFromDate(LocalDate fromDate) {
-        this.fromDate = fromDate;
-        return this;
-    }
-
-    public LocalDate getToDate() { return toDate; }
-    public OrderFilter setToDate(LocalDate toDate) {
-        this.toDate = toDate;
-        return this;
-    }
-
-    public String getPickupLocation() { return pickupLocation; }
-    public OrderFilter setPickupLocation(String pickupLocation) {
-        this.pickupLocation = pickupLocation;
-        return this;
+    /**
+     * Checks if any filter criteria is set
+     */
+    public boolean hasAnyFilter() {
+        return userId != null
+                || orderType != null
+                || status != null
+                || fromDate != null
+                || toDate != null
+                || pickupLocation != null;
     }
 }
