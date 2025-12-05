@@ -44,7 +44,7 @@ class UseCasesCompleteTest {
     @BeforeEach
     void setUp() {
         createOrderUseCase = new CreateOrderUseCase(orderRepository, idGenerator);
-        addOrderItemUseCase = new AddOrderItemUseCase(orderRepository, idGenerator);
+        //addOrderItemUseCase = new AddOrderItemUseCase(orderRepository, idGenerator);
         getOrderUseCase = new GetOrderUseCase(orderRepository);
         getOrderItemsUseCase = new GetOrderItemsUseCase(orderRepository);
         updateOrderStatusUseCase = new UpdateOrderStatusUseCase(orderRepository);
