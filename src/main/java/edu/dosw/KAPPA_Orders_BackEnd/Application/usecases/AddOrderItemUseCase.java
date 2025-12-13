@@ -21,11 +21,8 @@ public class AddOrderItemUseCase {
     }
 
     public OrderItem agregarItem(OrderItemCommand command) {
-
-
         Order orden = orderRepository.findById(command.orderId)
                 .orElseThrow(() -> new RuntimeException("Orden no encontrada: " + command.orderId));
-
 
         OrderItem item = new OrderItem(
                 command.id,
@@ -38,11 +35,12 @@ public class AddOrderItemUseCase {
                 command.details
         );
 
-        if (!stockClient.hasStock(item.getId(), item.getQuantity())){
+        // CORRECCIÓN: Usar getProductId() no getId()
+        if (!stockClient.hasStock(item.getProductId(), item.getQuantity())) {
             throw new IllegalStateException("No hay stock suficiente");
         }
 
-        stockClient.reduceStock(item.getId(), item.getQuantity());
+        stockClient.reduceStock(item.getProductId(), item.getQuantity());
 
         item.setId(idGenerator.generateItemId());
 
