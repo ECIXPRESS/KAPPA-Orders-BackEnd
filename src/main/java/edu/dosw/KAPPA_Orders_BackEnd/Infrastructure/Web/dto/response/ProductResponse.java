@@ -1,4 +1,4 @@
-package edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.dto.response;
+package edu.dosw.KAPPA_Orders_BackEnd.infrastructure.Web.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

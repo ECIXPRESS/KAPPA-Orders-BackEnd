@@ -1,7 +1,7 @@
 package edu.dosw.KAPPA_Orders_BackEnd.Application.services;
 
-import edu.dosw.KAPPA_Orders_BackEnd.infrastructure.Web.dto.request.ReduceStockRequest;
-import edu.dosw.KAPPA_Orders_BackEnd.infrastructure.Web.dto.response.ProductResponse;
+import edu.dosw.KAPPA_Orders_BackEnd.infrastructure.Web.dto.request.*;
+import edu.dosw.KAPPA_Orders_BackEnd.infrastructure.Web.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
