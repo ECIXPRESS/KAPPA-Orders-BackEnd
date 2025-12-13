@@ -28,7 +28,7 @@ public class StockClient {
     }
     public void reduceStock(String productId, int quantity) {
         try {
-            stockWebClient.patch()
+            stockWebClient.post()
                     .uri("/api/products/{id}/stock/decrease", productId)
                     .bodyValue(new ReduceStockRequest(quantity))
                     .retrieve()
