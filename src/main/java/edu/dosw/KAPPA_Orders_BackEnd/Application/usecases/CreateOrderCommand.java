@@ -11,6 +11,6 @@ public class CreateOrderCommand {
     public String pickupLocation;
     public String specialInstructions;
     public String store;
-
+    public String pointOfSaleId;
     public CreateOrderCommand() {}
 }

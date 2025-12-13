@@ -52,7 +52,7 @@ public class OrdersController {
             command.pickupLocation = request.pickupLocation;
             command.specialInstructions = request.specialInstructions;
             command.store = request.store;
-
+            command.pointOfSaleId = request.pointOfSaleId;
             Order order = createOrderUseCase.crearOrden(command);
             OrderResponse response = toOrderResponse(order);
 

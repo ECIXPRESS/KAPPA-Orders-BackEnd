@@ -25,5 +25,8 @@ public class CreateOrderRequest {
     @Schema(example = "Café Leyenda", description = "Tienda donde se procesa la orden")
     public String store;
 
+    @Schema(example = "tienda-123", description = "ID único del punto de venta (para verificación de horarios con Operation Schedule)")
+    public String pointOfSaleId;
+
     public CreateOrderRequest() {}
 }
