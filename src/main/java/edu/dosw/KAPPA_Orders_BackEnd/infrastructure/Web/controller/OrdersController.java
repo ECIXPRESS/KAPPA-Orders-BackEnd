@@ -1,16 +1,11 @@
-package edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.controller;
+package edu.dosw.KAPPA_Orders_BackEnd.infrastructure.Web.controller;
 
 import edu.dosw.KAPPA_Orders_BackEnd.Application.usecases.*;
 import edu.dosw.KAPPA_Orders_BackEnd.Domain.Model.Order;
 import edu.dosw.KAPPA_Orders_BackEnd.Domain.Model.OrderItem;
 import edu.dosw.KAPPA_Orders_BackEnd.Domain.Model.OrderStatus;
-import edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.dto.request.*;
-import edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.dto.request.CreateOrderRequest;
-import edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.dto.response.OrderResponse;
-import edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.dto.response.OrderItemResponse;
-import edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.dto.request.OrderItemRequest;
-import edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.dto.request.UpdateOrderStatusRequest;
-import edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.dto.request.UpdateEstimatedTimeRequest;
+import edu.dosw.KAPPA_Orders_BackEnd.infrastructure.Web.dto.response.*;
+import edu.dosw.KAPPA_Orders_BackEnd.infrastructure.Web.dto.request.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

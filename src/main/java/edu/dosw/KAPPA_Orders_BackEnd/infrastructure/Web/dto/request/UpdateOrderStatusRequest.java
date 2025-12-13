@@ -1,4 +1,4 @@
-package edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Web.dto.request;
+package edu.dosw.KAPPA_Orders_BackEnd.infrastructure.Web.dto.request;
 
 import edu.dosw.KAPPA_Orders_BackEnd.Domain.Model.OrderStatus;
 
