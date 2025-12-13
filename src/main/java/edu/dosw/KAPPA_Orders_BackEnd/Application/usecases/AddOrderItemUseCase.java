@@ -42,6 +42,8 @@ public class AddOrderItemUseCase {
             throw new IllegalStateException("No hay stock suficiente");
         }
 
+        stockClient.reduceStock(item.getId(), item.getQuantity());
+
         item.setId(idGenerator.generateItemId());
 
         OrderItem savedItem = orderRepository.saveOrderItem(item);
