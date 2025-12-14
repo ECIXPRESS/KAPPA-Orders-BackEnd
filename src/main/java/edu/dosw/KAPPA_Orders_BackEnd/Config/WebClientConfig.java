@@ -10,14 +10,14 @@ public class WebClientConfig {
     @Bean
     public WebClient stockWebClient() {
         return WebClient.builder()
-                .baseUrl("http://localhost:8081")
+                .baseUrl("http://localhost:8086")
                 .build();
     }
 
     @Bean
     public WebClient scheduleWebClient() {
         return WebClient.builder()
-                .baseUrl("http://localhost:8082")
+                .baseUrl("http://localhost:8087")
                 .build();
     }
 }

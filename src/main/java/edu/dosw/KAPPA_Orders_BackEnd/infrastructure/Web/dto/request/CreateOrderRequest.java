@@ -2,7 +2,6 @@ package edu.dosw.KAPPA_Orders_BackEnd.infrastructure.Web.dto.request;
 
 import edu.dosw.KAPPA_Orders_BackEnd.Domain.Model.OrderType;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.time.LocalDateTime;
 
 public class CreateOrderRequest {
@@ -27,6 +26,15 @@ public class CreateOrderRequest {
 
     @Schema(example = "tienda-123", description = "ID único del punto de venta (para verificación de horarios con Operation Schedule)")
     public String pointOfSaleId;
+
+    @Schema(example = "slot-123", description = "ID del slot a reservar en Operation Schedule")
+    public String slotId;
+
+    @Schema(example = "2025-02-15T14:30:00", description = "Hora de inicio del slot")
+    public LocalDateTime slotStartTime;
+
+    @Schema(example = "2025-02-15T15:00:00", description = "Hora de fin del slot")
+    public LocalDateTime slotEndTime;
 
     public CreateOrderRequest() {}
 }

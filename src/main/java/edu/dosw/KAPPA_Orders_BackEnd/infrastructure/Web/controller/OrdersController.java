@@ -53,6 +53,10 @@ public class OrdersController {
             command.specialInstructions = request.specialInstructions;
             command.store = request.store;
             command.pointOfSaleId = request.pointOfSaleId;
+            command.slotId = request.slotId;
+            command.slotStartTime = request.slotStartTime;
+            command.slotEndTime = request.slotEndTime;
+
             Order order = createOrderUseCase.crearOrden(command);
             OrderResponse response = toOrderResponse(order);
 

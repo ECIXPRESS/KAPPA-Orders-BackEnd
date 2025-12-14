@@ -1,4 +1,4 @@
-package edu.dosw.KAPPA_Orders_BackEnd.Infrastructure.Persistence;
+package edu.dosw.KAPPA_Orders_BackEnd.infrastructure.Persistence;
 
 import edu.dosw.KAPPA_Orders_BackEnd.Application.ports.OrderRepositoryPort;
 import edu.dosw.KAPPA_Orders_BackEnd.Domain.Model.Order;

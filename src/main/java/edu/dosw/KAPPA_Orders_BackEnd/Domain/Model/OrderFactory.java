@@ -6,16 +6,16 @@ import java.util.List;
 /**
  * Factory class for creating Order instances with validation
  */
-
-
 public class OrderFactory {
 
     /**
-     * Creates a new Order with the specified parameters
+     * Creates a new Order with the specified parameters (CON SLOT)
      */
     public static Order createOrder(String userId, OrderType orderType, List<OrderItem> items,
                                     LocalDateTime pickupTime,
-                                    String location, String store) {
+                                    String location, String store,
+                                    String pointOfSaleId, String slotId,
+                                    LocalDateTime slotStartTime, LocalDateTime slotEndTime) {
         orderChecks(userId, orderType, items, pickupTime);
 
         Order order = Order.builder()
@@ -27,6 +27,10 @@ public class OrderFactory {
                 .status(OrderStatus.PENDING)
                 .createdAt(LocalDateTime.now())
                 .store(store)
+                .pointOfSaleId(pointOfSaleId)
+                .slotId(slotId)
+                .slotStartTime(slotStartTime)
+                .slotEndTime(slotEndTime)
                 .build();
 
         order = order.withCalculatedTotal();
@@ -35,26 +39,25 @@ public class OrderFactory {
         return order;
     }
 
+    /**
+     * Creates a new Order with the specified parameters (SIN SLOT - backward compatibility)
+     */
+    public static Order createOrder(String userId, OrderType orderType, List<OrderItem> items,
+                                    LocalDateTime pickupTime,
+                                    String location, String store) {
+        return createOrder(userId, orderType, items, pickupTime, location, store,
+                null, null, null, null);
+    }
+
+    /**
+     * Creates a new Order with the specified parameters (SIN SLOT - con instrucciones especiales)
+     */
     public static Order createOrder(String userId, OrderType orderType, List<OrderItem> items,
                                     LocalDateTime pickupTime,
                                     String location, String store, String specialInstructions) {
-        orderChecks(userId, orderType, items, pickupTime);
-
-        Order order = Order.builder()
-                .userId(userId)
-                .orderType(orderType)
-                .items(items)
-                .scheduledPickup(pickupTime)
-                .pickupLocation(location)
-                .status(OrderStatus.PENDING)
-                .createdAt(LocalDateTime.now())
-                .store(store)
-                .specialInstructions(specialInstructions)
-                .build();
-
-        order = order.withCalculatedTotal();
-        order.validate();
-
+        Order order = createOrder(userId, orderType, items, pickupTime, location, store,
+                null, null, null, null);
+        order.setSpecialInstructions(specialInstructions);
         return order;
     }
 

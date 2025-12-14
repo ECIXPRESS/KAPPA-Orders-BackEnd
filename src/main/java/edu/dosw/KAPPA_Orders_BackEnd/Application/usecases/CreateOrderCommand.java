@@ -12,5 +12,9 @@ public class CreateOrderCommand {
     public String specialInstructions;
     public String store;
     public String pointOfSaleId;
+    public String slotId;
+    public LocalDateTime slotStartTime;
+    public LocalDateTime slotEndTime;
+
     public CreateOrderCommand() {}
 }

@@ -26,6 +26,12 @@ public class Order {
     @Singular
     private List<OrderItem> items;
     private String store;
+
+    private String pointOfSaleId;
+    private String slotId;
+    private LocalDateTime slotStartTime;
+    private LocalDateTime slotEndTime;
+
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime scheduledPickup;
@@ -37,16 +43,10 @@ public class Order {
 
     private static final BigDecimal MIN_ORDER_AMOUNT = new BigDecimal("5000");
 
-    /**
-     * Returns an unmodifiable view of the items list
-     */
     public List<OrderItem> getItems() {
         return items == null ? Collections.emptyList() : Collections.unmodifiableList(items);
     }
 
-    /**
-     * Calculates the total from all order items
-     */
     public BigDecimal calculateTotal() {
         if (items == null || items.isEmpty()) {
             return BigDecimal.ZERO;
@@ -56,9 +56,6 @@ public class Order {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    /**
-     * Creates a new Order with an additional item
-     */
     public Order withAddedItem(OrderItem item) {
         if (item == null) {
             throw new IllegalArgumentException("El item no puede ser nulo");
@@ -75,18 +72,12 @@ public class Order {
                 .build();
     }
 
-    /**
-     * Creates a new Order with the total calculated
-     */
     public Order withCalculatedTotal() {
         return this.toBuilder()
                 .total(calculateTotal())
                 .build();
     }
 
-    /**
-     * Validates the order amount meets minimum requirements
-     */
     public void validateOrderAmount() {
         if (this.items == null){
             throw new IllegalArgumentException("El pedido debe tener al menos un item");
@@ -95,9 +86,6 @@ public class Order {
         BigDecimal orderTotal = this.total != null ? this.total : calculateTotal();
     }
 
-    /**
-     * Validates all required fields are present
-     */
     public void validate() {
         if (userId == null || userId.trim().isEmpty()) {
             throw new IllegalArgumentException("User ID es requerido");

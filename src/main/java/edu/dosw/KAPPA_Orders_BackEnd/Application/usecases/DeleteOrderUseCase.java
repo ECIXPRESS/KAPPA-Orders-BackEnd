@@ -1,26 +1,28 @@
 package edu.dosw.KAPPA_Orders_BackEnd.Application.usecases;
 
 import edu.dosw.KAPPA_Orders_BackEnd.Application.ports.OrderRepositoryPort;
+import edu.dosw.KAPPA_Orders_BackEnd.Application.services.ScheduleClient;
+import edu.dosw.KAPPA_Orders_BackEnd.Domain.Model.Order;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DeleteOrderUseCase {
 
     private final OrderRepositoryPort orderRepository;
-    private final GetOrderItemsUseCase getOrderItemsUseCase;
+    private final ScheduleClient scheduleClient;
 
-    public DeleteOrderUseCase(OrderRepositoryPort orderRepository,
-                              GetOrderItemsUseCase getOrderItemsUseCase) {
+    public DeleteOrderUseCase(OrderRepositoryPort orderRepository, ScheduleClient scheduleClient) {
         this.orderRepository = orderRepository;
-        this.getOrderItemsUseCase = getOrderItemsUseCase;
+        this.scheduleClient = scheduleClient;
     }
 
     public void eliminarOrden(String orderId) {
-        orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Orden no encontrada: " + orderId));
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Orden no encontrada"));
 
-        getOrderItemsUseCase.obtenerItemsDeOrden(orderId)
-                .forEach(item -> orderRepository.deleteOrderItem(item.getId()));
+        if (order.getSlotId() != null) {
+            scheduleClient.releaseTimeSlot(order.getSlotId(), orderId);
+        }
 
         orderRepository.deleteById(orderId);
     }
